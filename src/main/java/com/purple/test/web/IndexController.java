@@ -1,9 +1,7 @@
 package com.purple.test.web;
 
-import org.h2.engine.Domain;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.purple.test.web.dto.YoutubeResponseDto;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
 @RestController
 public class IndexController {
@@ -37,7 +36,8 @@ public class IndexController {
         urlConnection.disconnect();
         String ss =result.toString();
 
-        // utf8 안먹어서 직접 변환해줌
+        /*
+        // utf8 안먹어서 직접 변환해줌 -> Mapping을 진행하니 오류가 났음. 브라우저엔 유니코드가 그대로 나왔지만 사실은 UTF-8변환이 제대로 됐던 것 같다.
         StringBuffer temp = new StringBuffer();
 
         for(int i=0; i<ss.length(); i++){
@@ -50,25 +50,13 @@ public class IndexController {
             }
         }
         String sss = temp.toString();
+         */
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> map = mapper.readValue(ss, Map.class);
+        YoutubeResponseDto dto = new YoutubeResponseDto(map.get("title").toString(),map.get("author_name").toString(),map.get("author_url").toString(),map.get("type").toString(),Integer.parseInt(map.get("height").toString()),
+                Integer.parseInt(map.get("width").toString()),map.get("version").toString(),map.get("provider_name").toString(),map.get("provider_url").toString(),Integer.parseInt(map.get("thumbnail_height").toString()),
+                Integer.parseInt(map.get("thumbnail_width").toString()),map.get("thumbnail_url").toString(),map.get("html").toString());
 
-        //자르기
-        JSONObject jObj;
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObj=(JSONObject) jsonParser.parse(sss);
-        JSONObject parseResponse = (JSONObject) jsonObj.get("response");
-
-        JSONObject parseBody = (JSONObject) parseResponse.get("body");
-
-        JSONArray array = (JSONArray) parseBody.get("items");
-
-        //도메인 매핑
-        for(int i=0; i<array.size();i++){
-            jObj=(JSONObject)array.get(i);
-
-            //도메인클래스 빌더패턴으로 값 삽입
-
-        }
-
-        return sss;
+        return dto.toString();
     }
 }

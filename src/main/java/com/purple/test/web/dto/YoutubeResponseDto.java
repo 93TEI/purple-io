@@ -1,11 +1,10 @@
 package com.purple.test.web.dto;
 
-import com.purple.test.domain.Youtube;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
-@Data
 @Getter
+@ToString
+@NoArgsConstructor
 public class YoutubeResponseDto {
     private String title;
     private String author_name;
@@ -21,20 +20,19 @@ public class YoutubeResponseDto {
     private String thumbnail_url;
     private String html;
 
-    public Youtube toEntity(){
-        return Youtube.builder()
-                .title(title)
-                .author_name(author_name)
-                .author_url(author_url)
-                .type(type)
-                .height(height)
-                .width(width)
-                .version(version)
-                .provider_name(provider_name)
-                .provider_url(provider_url)
-                .thumbnail_height(thumbnail_height)
-                .thumbnail_width(thumbnail_width)
-                .thumbnail_url(thumbnail_url)
-                .html(html).build();
+    public YoutubeResponseDto(String title, String author_name, String author_url, String type, int height, int width, String version, String provider_name, String provider_url, int thumbnail_height, int thumbnail_width, String thumbnail_url, String html) {
+        this.title = title;
+        this.author_name = author_name;
+        this.author_url = author_url;
+        this.type = type;
+        this.height = height;
+        this.width = width;
+        this.version = version;
+        this.provider_name = provider_name;
+        this.provider_url = provider_url;
+        this.thumbnail_height = thumbnail_height;
+        this.thumbnail_width = thumbnail_width;
+        this.thumbnail_url = thumbnail_url;
+        this.html = html;
     }
 }
