@@ -22,8 +22,8 @@ public class IndexController {
     public String call(Model model) throws IOException, ParseException {
         StringBuilder result = new StringBuilder();
 
-            String urlStr="https://www.youtube.com/oembed?url=https%3A%2F%2Fyoutu.be%2FZOOeP3SBFIM";
-            URL url = new URL(urlStr);
+        String urlStr="https://www.youtube.com/oembed?url=https%3A%2F%2Fyoutu.be%2FZOOeP3SBFIM";
+        URL url = new URL(urlStr);
 
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
