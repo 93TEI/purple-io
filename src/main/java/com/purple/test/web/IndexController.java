@@ -3,6 +3,8 @@ package com.purple.test.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purple.test.web.dto.YoutubeResponseDto;
 import org.json.simple.parser.ParseException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,10 +15,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-@RestController
+@Controller
 public class IndexController {
+
     @GetMapping("/")
-    public String callApi() throws IOException, ParseException {
+    public String call(Model model) throws IOException, ParseException {
         StringBuilder result = new StringBuilder();
 
             String urlStr="https://www.youtube.com/oembed?url=https%3A%2F%2Fyoutu.be%2FZOOeP3SBFIM";
@@ -57,6 +60,7 @@ public class IndexController {
                 Integer.parseInt(map.get("width").toString()),map.get("version").toString(),map.get("provider_name").toString(),map.get("provider_url").toString(),Integer.parseInt(map.get("thumbnail_height").toString()),
                 Integer.parseInt(map.get("thumbnail_width").toString()),map.get("thumbnail_url").toString(),map.get("html").toString());
 
-        return dto.toString();
+        model.addAttribute("youtube",dto);
+        return "index";
     }
 }
