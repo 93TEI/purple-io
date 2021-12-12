@@ -15,52 +15,56 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-@Controller
+@RestController
 public class IndexController {
 
     @GetMapping("/")
     public String call(Model model) throws IOException, ParseException {
         StringBuilder result = new StringBuilder();
+        String inputUrl = "https://youtu.be/ZOOeP3SBFIM";
+        String urlStr="https://www.youtube.com/"+"oembed?url="+inputUrl;
 
-        String urlStr="https://www.youtube.com/oembed?url=https%3A%2F%2Fyoutu.be%2FZOOeP3SBFIM";
         URL url = new URL(urlStr);
-
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
 
-        BufferedReader br;
-        br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
         String returnLine;
 
         while((returnLine = br.readLine()) != null){
             result.append(returnLine+"\n\r");
         }
-
         urlConnection.disconnect();
-        String ss =result.toString();
+        String infoResult =result.toString();
 
-        /*
-        // utf8 안먹어서 직접 변환해줌 -> Mapping을 진행하니 오류가 났음. 브라우저엔 유니코드가 그대로 나왔지만 사실은 UTF-8변환이 제대로 됐던 것 같다.
-        StringBuffer temp = new StringBuffer();
-
-        for(int i=0; i<ss.length(); i++){
-            if(ss.charAt(i) == '\\'  &&  ss.charAt(i+1) == 'u'){
-                Character c = (char)Integer.parseInt(ss.substring(i+2, i+6), 16);
-                temp.append(c);
-                i+=5;
-            }else{
-                temp.append(ss.charAt(i));
-            }
-        }
-        String sss = temp.toString();
-         */
+        //매핑
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> map = mapper.readValue(ss, Map.class);
+        Map<String, Object> map = mapper.readValue(infoResult, Map.class);
         YoutubeResponseDto dto = new YoutubeResponseDto(map.get("title").toString(),map.get("author_name").toString(),map.get("author_url").toString(),map.get("type").toString(),Integer.parseInt(map.get("height").toString()),
                 Integer.parseInt(map.get("width").toString()),map.get("version").toString(),map.get("provider_name").toString(),map.get("provider_url").toString(),Integer.parseInt(map.get("thumbnail_height").toString()),
                 Integer.parseInt(map.get("thumbnail_width").toString()),map.get("thumbnail_url").toString(),map.get("html").toString());
 
         model.addAttribute("youtube",dto);
-        return "index";
+
+
+        //엔드포인트
+        URL urlEndpointStr = new URL("https://oembed.com/providers.json");
+        HttpURLConnection urlEndpoint = (HttpURLConnection) urlEndpointStr.openConnection();
+        urlEndpoint.setRequestMethod("GET");
+
+        BufferedReader br2 = new BufferedReader(new InputStreamReader(urlEndpoint.getInputStream(), "UTF-8"));
+        String returnLine2;
+
+        StringBuilder result2 = new StringBuilder();
+        while((returnLine2 = br2.readLine()) != null){
+            result2.append(returnLine2+"\n\r");
+        }
+        urlEndpoint.disconnect();
+        String endPointResult =result2.toString();
+
+
+
+        return endPointResult;
+
     }
 }
