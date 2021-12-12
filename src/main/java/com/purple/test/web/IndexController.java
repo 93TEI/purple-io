@@ -57,7 +57,7 @@ public class IndexController {
 
         // 입력한 url
         StringBuilder result = new StringBuilder();
-        String inputUrl = "https://www.youtube.com/watch?v=dBD54EZIrZo";
+        String inputUrl = "https://vimeo.com/20097015";
         String splitUrl[] = inputUrl.split("\\.");
         String splitResult = splitUrl.length >= 3 ? splitUrl[1] : splitUrl[0];
         String urlStr="";
