@@ -2,4 +2,4 @@
 
 .gradle
 .idea
-purple-io\src\main\java\com\purple\test\api\ApiKey.java
+ApiKey.java
