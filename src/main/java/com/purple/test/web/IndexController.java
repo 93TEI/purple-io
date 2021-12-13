@@ -1,6 +1,7 @@
 package com.purple.test.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.purple.test.api.ApiKey;
 import com.purple.test.web.dto.YoutubeResponseDto;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,6 +28,9 @@ public class IndexController {
 
     @GetMapping("/")
     public String call(Model model) throws IOException, ParseException {
+
+        //
+        String a = ApiKey.apiKey;
 
         //엔드포인트
         URL urlEndpointStr = new URL("https://oembed.com/providers.json");
@@ -57,7 +61,7 @@ public class IndexController {
 
         // 입력한 url
         StringBuilder result = new StringBuilder();
-        String inputUrl = "https://vimeo.com/20097015";
+        String inputUrl = "https://www.instagram.com/p/BUawPlPF_Rx/&access_token=1165265950291154|23cf7ce9e94d9d59740e5a7ea86f517d";
         String splitUrl[] = inputUrl.split("\\.");
         String splitResult = splitUrl.length >= 3 ? splitUrl[1] : splitUrl[0];
         String urlStr="";
