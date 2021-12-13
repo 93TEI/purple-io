@@ -1,8 +1,6 @@
 package com.purple.test.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purple.test.api.ApiKey;
-import com.purple.test.web.dto.YoutubeResponseDto;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,8 +17,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -28,9 +24,6 @@ public class IndexController {
 
     @GetMapping("/")
     public String call(Model model) throws IOException, ParseException {
-
-        //
-        String a = ApiKey.apiKey;
 
         //엔드포인트
         URL urlEndpointStr = new URL("https://oembed.com/providers.json");
@@ -46,11 +39,10 @@ public class IndexController {
 
         for(int i=0; i< array.size(); i++){
             JSONObject provider_url = (JSONObject) array.get(i);
-            String getEndpnt = (String) provider_url.get("endpoints").toString();
+            String getEndpnt = provider_url.get("endpoints").toString();
 
             Object objEndpntUrl = jsonParser.parse(getEndpnt);
-            JSONArray jsonArray = new JSONArray();
-            jsonArray = (JSONArray) objEndpntUrl;
+            JSONArray jsonArray = (JSONArray) objEndpntUrl;
             JSONObject urlData = (JSONObject) jsonArray.get(0);
 
             String value = (String) urlData.get("url");
@@ -60,24 +52,30 @@ public class IndexController {
         urlEndpoint.disconnect();
 
         // 입력한 url
-        StringBuilder result = new StringBuilder();
-        String inputUrl = "https://www.instagram.com/p/BUawPlPF_Rx/&access_token=1165265950291154|23cf7ce9e94d9d59740e5a7ea86f517d";
+        String inputUrl = "https://vimeo.com/20097015";
         String splitUrl[] = inputUrl.split("\\.");
         String splitResult = splitUrl.length >= 3 ? splitUrl[1] : splitUrl[0];
+        if(splitUrl[0].contains("twitter"))
+            splitResult = splitUrl[0].substring(9);
         String urlStr="";
         for(Object objLst : lst){
             String str = objLst.toString();
             if(str.contains(splitResult)){
-                if(str.contains("oembed."))
+                if(str.contains("instagram")) {
+                    urlStr = str + "?url=" + inputUrl + "&access_token=" + ApiKey.apiID + "|" + ApiKey.secretCode;
+                    break;
+                }
+                if(str.contains("oembed.")) {
                     str = str.replace("{format}", "json");
+                }
                 urlStr=str+"?url="+inputUrl;
                 break;
             }
         }
 
-        Map<String, Object> embedResult = new HashMap<>();
         RestTemplate template = new RestTemplate();
-        embedResult = template.getForObject(urlStr, Map.class);
+        Map<String, Object> embedResult = template.getForObject(urlStr, Map.class);
+
         return embedResult.toString();
 
     }
