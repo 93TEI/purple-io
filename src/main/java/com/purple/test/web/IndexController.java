@@ -8,7 +8,6 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -19,11 +18,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
-@RestController
+@Controller
 public class IndexController {
 
     @GetMapping("/")
-    public String call(Model model) throws IOException, ParseException {
+    public String index(){
+        return "index";
+    }
+
+    @GetMapping("/")
+    public String[] call(Model model) throws IOException, ParseException {
 
         //엔드포인트
         URL urlEndpointStr = new URL("https://oembed.com/providers.json");
@@ -76,7 +80,18 @@ public class IndexController {
         RestTemplate template = new RestTemplate();
         Map<String, Object> embedResult = template.getForObject(urlStr, Map.class);
 
-        return embedResult.toString();
+        //앞단에 데이터 넘기기
+        String[] key = new String[embedResult.size()];
+        String[] value = new String[embedResult.size()];
+
+        int i=0;
+        for(Map.Entry<String,Object> entry : embedResult.entrySet()){
+            key[i] = entry.getKey();
+            value[i++]=entry.getValue().toString();
+        }
+
+        model.addAttribute("result",embedResult);
+        return value;
 
     }
 }

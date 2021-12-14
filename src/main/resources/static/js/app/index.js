@@ -8,7 +8,7 @@ var main = {
     },
 
     request : function () {
-        var nickname = $('#urlInput').val();
+        var urlInput = $('#urlInput').val();
 
         $.ajax({
             type: 'GET',
