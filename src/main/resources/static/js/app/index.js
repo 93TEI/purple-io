@@ -3,7 +3,7 @@ var main = {
 
         var _this = this;
         $('#btn-request').on('click', function () {
-            request();
+            _this.request();
         });
     },
 
@@ -15,7 +15,8 @@ var main = {
             url: '/api/v1/request/'+urlInput,
             dataType: 'text',
             contentType: 'application/json; charset=utf-8'
-        }).done(function () {
+        }).done(function (data) {
+            alert(JSON.stringify(data));
             window.location.href = '/response';
         }).fail(function (error) {
             alert(JSON.stringify(error));

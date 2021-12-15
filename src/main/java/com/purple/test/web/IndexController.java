@@ -8,6 +8,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -26,8 +27,14 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/")
-    public String[] call(Model model) throws IOException, ParseException {
+    @GetMapping("/response")
+    public String result(Model model){
+        model.addAttribute("value","value");
+        return "response";
+    }
+
+    @GetMapping("/api/v1/request/{urlInput}")
+    public String call(@PathVariable String urlInput, Model model) throws IOException, ParseException {
 
         //엔드포인트
         URL urlEndpointStr = new URL("https://oembed.com/providers.json");
@@ -56,8 +63,8 @@ public class IndexController {
         urlEndpoint.disconnect();
 
         // 입력한 url
-        String inputUrl = "https://vimeo.com/20097015";
-        String splitUrl[] = inputUrl.split("\\.");
+        //String urlInput = "https://vimeo.com/20097015";
+        String splitUrl[] = urlInput.split("\\.");
         String splitResult = splitUrl.length >= 3 ? splitUrl[1] : splitUrl[0];
         if(splitUrl[0].contains("twitter"))
             splitResult = splitUrl[0].substring(9);
@@ -66,13 +73,13 @@ public class IndexController {
             String str = objLst.toString();
             if(str.contains(splitResult)){
                 if(str.contains("instagram")) {
-                    urlStr = str + "?url=" + inputUrl + "&access_token=" + ApiKey.apiID + "|" + ApiKey.secretCode;
+                    urlStr = str + "?url=" + urlInput + "&access_token=" + ApiKey.apiID + "|" + ApiKey.secretCode;
                     break;
                 }
                 if(str.contains("oembed.")) {
                     str = str.replace("{format}", "json");
                 }
-                urlStr=str+"?url="+inputUrl;
+                urlStr=str+"?url="+urlInput;
                 break;
             }
         }
@@ -90,8 +97,10 @@ public class IndexController {
             value[i++]=entry.getValue().toString();
         }
 
-        model.addAttribute("result",embedResult);
-        return value;
+        model.addAttribute("value",value);
+
+        return "response";
+        //return value[value.length-12]; -12가 영상 viemo
 
     }
 }
