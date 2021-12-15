@@ -6,10 +6,8 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -30,7 +28,7 @@ public class IndexController {
     @GetMapping("/api/v1/request/https://vimeo.com/20097015")
     public String call(Model model) throws IOException, ParseException {
 
-        // 엔드포인트
+        // oEmbed의 엔드포인트
         ArrayList lst = oembedService.requestEndpoint();
 
         // 입력한 url 매핑하여 oembed url로 바꿔주기
@@ -39,7 +37,5 @@ public class IndexController {
         // 데이터 요청과 저장
         oembedService.requestData(urlStr);
         return "response";
-        //return value[value.length-12]; -12가 영상 viemo
-
     }
 }
