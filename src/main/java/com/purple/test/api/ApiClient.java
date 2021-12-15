@@ -1,6 +1,5 @@
 package com.purple.test.api;
 
-import com.purple.test.web.dto.YoutubeResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

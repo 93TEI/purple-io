@@ -13,6 +13,7 @@ import java.util.ArrayList;
 @Controller
 public class IndexController {
     private final OembedService oembedService;
+    private String urlStr;
 
     @GetMapping("/")
     public String index(){
@@ -21,7 +22,7 @@ public class IndexController {
 
     @GetMapping("/response")
     public String result(Model model){
-        model.addAttribute("value","value");
+        model.addAttribute("list",oembedService.requestData(urlStr));
         return "response";
     }
 
@@ -32,10 +33,8 @@ public class IndexController {
         ArrayList lst = oembedService.requestEndpoint();
 
         // 입력한 url 매핑하여 oembed url로 바꿔주기
-        String urlStr = oembedService.compareUrl(lst);
+        urlStr = oembedService.compareUrl(lst);
 
-        // 데이터 요청과 저장
-        oembedService.requestData(urlStr);
         return "response";
     }
 }

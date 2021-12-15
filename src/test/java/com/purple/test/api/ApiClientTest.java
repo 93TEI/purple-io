@@ -1,6 +1,6 @@
 package com.purple.test.api;
 
-import com.purple.test.web.dto.YoutubeResponseDto;
+import com.purple.test.web.dto.ContentDataResponseDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class ApiClientTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private YoutubeResponseDto dto;
+    private ContentDataResponseDto dto;
 
     private final String UserInfoUrl = "https://www.youtube.com/oembed?url=https%3A%2F%2Fyoutu.be%2FZOOeP3SBFIM";
 
@@ -32,7 +32,7 @@ public class ApiClientTest {
         final HttpHeaders httpHeaders = new HttpHeaders();  //HttpHeaders는 서버에 데이터를 보내주는 방법
         final HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
-        dto = restTemplate.exchange(UserInfoUrl, HttpMethod.GET, entity, YoutubeResponseDto.class).getBody();
+        dto = restTemplate.exchange(UserInfoUrl, HttpMethod.GET, entity, ContentDataResponseDto.class).getBody();
 
         System.out.println(dto);
     }

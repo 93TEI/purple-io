@@ -2,6 +2,7 @@ package com.purple.test.service;
 
 import com.purple.test.api.ApiClient;
 import com.purple.test.api.ApiKey;
+import com.purple.test.domain.ContentData;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -44,24 +46,14 @@ public class OembedService {
         return urlStr;
     }
 
-    public void requestData(String urlStr) {
+    public List requestData(String urlStr) {
         RestTemplate template = new RestTemplate();
         Map<String, Object> embedResult = template.getForObject(urlStr, Map.class);
 
-        //앞단에 데이터 넘기기
-        String[] key = new String[embedResult.size()];
-        String[] value = new String[embedResult.size()];
-
-        int i=0;
+        List<ContentData> result = new ArrayList<>();
         for(Map.Entry<String,Object> entry : embedResult.entrySet()){
-            key[i] = entry.getKey();
-            value[i++]=entry.getValue().toString();
+            result.add(new ContentData(entry.getKey(),entry.getValue().toString()));
         }
+        return result;
     }
-
-    public void getData() {
-
-    }
-
-
 }
