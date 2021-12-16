@@ -16,7 +16,6 @@ var main = {
             dataType: 'html',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
-            alert(JSON.stringify(data));
             window.location.href = '/response';
         }).fail(function (error) {
             alert(JSON.stringify(error));

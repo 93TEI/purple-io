@@ -1,18 +1,34 @@
 <!Doctype HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div id="title">oEmbed Test</div>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>oEmbed Test</title>
+    <link rel="stylesheet" href="css/home.css" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-<h1>성공</h1>
-    {{#list}}
-        <h4>{{key}}</h4>
-        {{{value}}}
-    {{/list}}
+    <div class="container">
+        <header>
+            <div id="title">oEmbed Test</div>
+            <div id="input_Box">
+                <input type="text" class="form-control" id="urlInput" placeholder="url을 입력하세요.">
+                <input type="button" value="확인" id="btn-request">
+            </div>
+        </header>
+        <article>
+
+            <div id="content_wrap">
+                {{#title}}
+                    <ul id="responseDataInContainer"><li><div>{{key}}</div><div>{{{value}}}</div></li></ul>
+                {{/title}}
+                {{#list}}
+                <div id="title_container"></div>
+                <ul id="responseDataInContainer"><li><div>{{key}}</div><div>{{{value}}}</div></li></ul>
+            {{/list}}
+            </div>
+        </article>
+    </div>
 </body>
 <script src="/js/app/index.js"></script>
 </html>

@@ -22,8 +22,8 @@ public class OembedService {
         return apiClient.Endpoint();
     }
 
-    public String compareUrl( ArrayList lst) {
-        String urlInput = "https://vimeo.com/20097015"; // GetMapping의 중괄호가 작동하지 않아서 직접 넣어서 테스트 중
+    public String compareUrl(String urlInput, ArrayList lst) {
+        //String urlInput = "https://vimeo.com/20097015"; // GetMapping의 중괄호가 작동하지 않아서 직접 넣어서 테스트 중
         String splitUrl[] = urlInput.split("\\.");
         String splitResult = splitUrl.length >= 3 ? splitUrl[1] : splitUrl[0];
         if(splitUrl[0].contains("twitter"))
@@ -52,7 +52,21 @@ public class OembedService {
 
         List<ContentData> result = new ArrayList<>();
         for(Map.Entry<String,Object> entry : embedResult.entrySet()){
+            if(entry.getKey().contains("title"))
+                continue;
             result.add(new ContentData(entry.getKey(),entry.getValue().toString()));
+        }
+        return result;
+    }
+
+    public List requestTitle(String urlStr) {
+        RestTemplate template = new RestTemplate();
+        Map<String, Object> embedResult = template.getForObject(urlStr, Map.class);
+
+        List<ContentData> result = new ArrayList<>();
+        for(Map.Entry<String,Object> entry : embedResult.entrySet()){
+            if(entry.getKey().contains("title"))
+                result.add(new ContentData(entry.getKey(),entry.getValue().toString()));
         }
         return result;
     }
