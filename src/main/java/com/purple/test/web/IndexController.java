@@ -19,7 +19,7 @@ public class IndexController {
     public String index(){
         return "index";
     }
-
+/*
     @GetMapping("/response")
     public String result(Model model){
         model.addAttribute("list",oembedService.requestData(urlStr));
@@ -37,4 +37,6 @@ public class IndexController {
 
         return "response";
     }
+
+ */
 }

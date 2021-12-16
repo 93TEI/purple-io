@@ -13,7 +13,7 @@ var main = {
         $.ajax({
             type: 'GET',
             url: '/api/v1/request/'+urlInput,
-            dataType: 'text',
+            dataType: 'html',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             alert(JSON.stringify(data));
