@@ -22,28 +22,29 @@ public class OembedService {
         return apiClient.Endpoint();
     }
 
-    public String compareUrl(String urlInput, ArrayList lst) {
-        //String urlInput = "https://vimeo.com/20097015"; // GetMapping의 중괄호가 작동하지 않아서 직접 넣어서 테스트 중
-        String splitUrl[] = urlInput.split("\\.");
+    public String compareUrl(String urlStr, ArrayList lst) {
+
+        String splitUrl[] = urlStr.split("\\.");
         String splitResult = splitUrl.length >= 3 ? splitUrl[1] : splitUrl[0];
         if(splitUrl[0].contains("twitter"))
             splitResult = splitUrl[0].substring(9);
-        String urlStr="";
+        String combineUrl="";
         for(Object objLst : lst){
             String str = objLst.toString();
             if(str.contains(splitResult)){
                 if(str.contains("instagram")) {
-                    urlStr = str + "?url=" + urlInput + "&access_token=" + ApiKey.apiID + "|" + ApiKey.secretCode;
+                    combineUrl = str + "?url=" + urlStr + "&access_token=" + ApiKey.apiID + "|" + ApiKey.secretCode;
                     break;
                 }
                 if(str.contains("oembed.")) {
                     str = str.replace("{format}", "json");
                 }
-                urlStr=str+"?url="+urlInput;
+                combineUrl=str+"?url="+urlStr;
                 break;
             }
         }
-        return urlStr;
+        System.out.println("urlStr :"+urlStr);
+        return combineUrl;
     }
 
     public List requestData(String urlStr) {
@@ -52,11 +53,13 @@ public class OembedService {
 
         List<ContentData> result = new ArrayList<>();
         for(Map.Entry<String,Object> entry : embedResult.entrySet()){
+            System.out.println("inside : " + entry.getKey() + entry.getValue());
             if(entry.getKey().contains("title"))
                 continue;
             if(entry.getKey().contains("thumbnail_url"))
                 result.add(new ContentData(entry.getKey(),"<img src="+entry.getValue().toString()+">"));
-            result.add(new ContentData(entry.getKey(),entry.getValue().toString()));
+            if(entry.getValue() != null)
+                result.add(new ContentData(entry.getKey(),entry.getValue().toString()));
         }
         return result;
     }
@@ -67,6 +70,7 @@ public class OembedService {
 
         List<ContentData> result = new ArrayList<>();
         for(Map.Entry<String,Object> entry : embedResult.entrySet()){
+            System.out.println("title:"+ entry.getKey());
             if(entry.getKey().contains("title"))
                 result.add(new ContentData(entry.getKey(),entry.getValue().toString()));
         }

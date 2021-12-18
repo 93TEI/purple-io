@@ -20,8 +20,8 @@ group 'com.purple.test'
 version '1.0-SNAPSHOT'
 
 repositories {
-    mavenCentral() // 본인이 만든 라이브러리를 업로드할때 많은 과정과 설정 필요
-    jcenter()   //위의 단점을 간단하게함. 또한 여기에 업로드하면 자동으로 메이븐에 업로드되게 자동화할수잇음
+    mavenCentral()
+    jcenter()
 }
 
 dependencies {
