@@ -43,7 +43,6 @@ public class OembedService {
                 break;
             }
         }
-        System.out.println("urlStr :"+urlStr);
         return combineUrl;
     }
 
@@ -53,7 +52,6 @@ public class OembedService {
 
         List<ContentData> result = new ArrayList<>();
         for(Map.Entry<String,Object> entry : embedResult.entrySet()){
-            System.out.println("inside : " + entry.getKey() + entry.getValue());
             if(entry.getKey().contains("title"))
                 continue;
             if(entry.getKey().contains("thumbnail_url"))
@@ -70,7 +68,6 @@ public class OembedService {
 
         List<ContentData> result = new ArrayList<>();
         for(Map.Entry<String,Object> entry : embedResult.entrySet()){
-            System.out.println("title:"+ entry.getKey());
             if(entry.getKey().contains("title"))
                 result.add(new ContentData(entry.getKey(),entry.getValue().toString()));
         }

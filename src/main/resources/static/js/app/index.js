@@ -9,7 +9,8 @@ var main = {
 
     request : function () {
         var urlInput = $('#urlInput').val();
-
+        urlInput = urlInput.replaceAll("/",":t:e:i:slash")
+        urlInput = urlInput.replaceAll("?",":t:e:i:qustion")
         $.ajax({
             type: 'GET',
             url: '/api/v1/request/'+urlInput,
