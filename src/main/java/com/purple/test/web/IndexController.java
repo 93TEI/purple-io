@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,10 +28,8 @@ public class IndexController {
         return "response";
     }
 
-    @GetMapping("/api/v1/request/{urlStr}")
-    public String callUrl(@PathVariable String urlStr, Model model) throws IOException, ParseException {
-        urlStr = urlStr.replaceAll(":t:e:i:slash","/");
-        urlStr = urlStr.replaceAll(":t:e:i:qustion","?");
+    @PostMapping("/api/v1/request/{urlStr}")
+    public String callUrl(@RequestBody String urlStr, Model model) throws IOException, ParseException {
 
         // oEmbed의 엔드포인트
         ArrayList lst = oembedService.requestEndpoint();
