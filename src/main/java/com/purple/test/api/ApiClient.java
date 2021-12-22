@@ -33,9 +33,8 @@ public class ApiClient {
 
         for(int i=0; i< array.size(); i++){
             JSONObject provider_url = (JSONObject) array.get(i);
-            String getEndpnt = provider_url.get("endpoints").toString();
+            Object objEndpntUrl = jsonParser.parse(provider_url.get("endpoints").toString());
 
-            Object objEndpntUrl = jsonParser.parse(getEndpnt);
             JSONArray jsonArray = (JSONArray) objEndpntUrl;
             JSONObject urlData = (JSONObject) jsonArray.get(0);
 
