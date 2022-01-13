@@ -1,6 +1,5 @@
 package com.purple.test.web.dto;
 
-import com.purple.test.domain.ContentData;
 import lombok.*;
 
 @Data
